@@ -7,12 +7,10 @@ import org.hibernate.cfg.Configuration;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.List;
 
 public class TestManager {
 
-    private List<Question> questions = new ArrayList<Question>();
     private SessionFactory factory;
     private Session session;
 
@@ -29,6 +27,7 @@ public class TestManager {
         int numberOfQuestion = 1;
         String input;
         int resultOfTest = 0;
+        List<Question> questions;
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Адрес электронной почты:");

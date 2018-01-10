@@ -73,8 +73,8 @@ public class OutputResultsFromDBase {
 
         List<StudentTest> studentTests;
         List<Question> questions;
-        int studentTestId;
-        int studentTestQuestionId;
+        int studentTestId = - 1;
+        int studentTestQuestionId = -1;
 
         int studentId = getStudentId(name);
 
@@ -82,18 +82,24 @@ public class OutputResultsFromDBase {
 
             outputStudentTest(studentId);
 
-            System.out.println("Для просмотра вопросов, выберите номер теста или наберите 'exit' для выхода");
-            studentTestId = digitInput();
+            while(studentTestId != 0) {
 
-            if(studentTestId != 0){
-                outputQuestions(studentTestId);
-            }
+                System.out.println("Для просмотра вопросов, выберите номер теста или наберите 'exit' для выхода");
+                studentTestId = digitInput();
 
-            System.out.println("Для просмотра ответов, выберите номер вопроса в тесте или 'exit' для выхода");
-            studentTestQuestionId = digitInput();
+                if (studentTestId != 0) {
+                    outputQuestions(studentTestId);
 
-            if(studentTestQuestionId != 0){
-                outputAnswers(studentTestQuestionId);
+                    while (studentTestQuestionId != 0) {
+
+                        System.out.println("Для просмотра ответов, выберите номер вопроса в тесте или 'exit' для выхода");
+                        studentTestQuestionId = digitInput();
+
+                        if (studentTestQuestionId != 0) {
+                            outputAnswers(studentTestQuestionId);
+                        }
+                    }
+                }
             }
 
         } else System.out.println("Студент не найден.");
@@ -104,6 +110,7 @@ public class OutputResultsFromDBase {
         int studentId = 0;
         List<Student> students ;
 
+        //Query query1 = session.getCriteriaBuilder();
         Query query = session.createQuery("from Student");
         students = query.list();
 
@@ -158,7 +165,8 @@ public class OutputResultsFromDBase {
 
         for (StudentTestAnswers studentTestAnswer : studentTestAnswers){
 
-            System.out.println(getAnswer(studentTestAnswer.getAnswerId()).getTextOfAnswer());
+            System.out.println(getAnswer(studentTestAnswer.getAnswerId()).getTextOfAnswer() + " - "
+                    + getAnswer(studentTestAnswer.getAnswerId()).isCorrect());
         }
     }
 

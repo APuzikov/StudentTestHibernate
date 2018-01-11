@@ -1,6 +1,8 @@
 package ru.mera.hibernate;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "student")
@@ -10,8 +12,7 @@ public class Student {
     private String name;
     private String email;
     private String password;
-
-
+    private Set<StudentTest> studentTests = new HashSet<>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,9 +48,12 @@ public class Student {
         this.password = password;
     }
 
-    @Override
-    public String toString() {
-        return getName() + " : " + getEmail() + " : " + getPassword();
+    @OneToMany(mappedBy = "student")
+    public Set<StudentTest> getStudentTests() {
+        return studentTests;
     }
 
+    public void setStudentTests(Set<StudentTest> studentTests) {
+        this.studentTests = studentTests;
+    }
 }

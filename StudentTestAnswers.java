@@ -10,7 +10,7 @@ public class StudentTestAnswers {
     private int id;
     private int studentTestQuestionId;
     private int answerId;
-
+    private StudentTestQuestion studentTestQuestion;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,5 +39,15 @@ public class StudentTestAnswers {
 
     public void setAnswerId(int answerId) {
         this.answerId = answerId;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "student_test_question_id", insertable = false, updatable = false)
+    public StudentTestQuestion getStudentTestQuestion() {
+        return studentTestQuestion;
+    }
+
+    public void setStudentTestQuestion(StudentTestQuestion studentTestQuestion) {
+        this.studentTestQuestion = studentTestQuestion;
     }
 }

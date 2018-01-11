@@ -3,6 +3,8 @@ package ru.mera.hibernate;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "student_test")
@@ -13,6 +15,8 @@ public class StudentTest {
     private Timestamp testDate;
     private Timestamp endDate;
     private float testResult;
+    private Student student;
+    private Set<StudentTestQuestion> studentTestQuestions = new HashSet<>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -59,5 +63,24 @@ public class StudentTest {
 
     public void setTestResult(float testResult) {
         this.testResult = testResult;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "student_id", insertable = false, updatable = false)
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
+    }
+
+    @OneToMany(mappedBy = "studentTest")
+    public Set<StudentTestQuestion> getStudentTestQuestions() {
+        return studentTestQuestions;
+    }
+
+    public void setStudentTestQuestions(Set<StudentTestQuestion> studentTestQuestions) {
+        this.studentTestQuestions = studentTestQuestions;
     }
 }

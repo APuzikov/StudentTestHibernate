@@ -10,6 +10,7 @@ public class Answer {
     private String textOfAnswer;
     private boolean correct;
     private int questionId;
+    private Question question;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,5 +45,15 @@ public class Answer {
     }
     public void setQuestionId(int questionId) {
         this.questionId = questionId;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "question_id", insertable = false, updatable = false)
+    public Question getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(Question question) {
+        this.question = question;
     }
 }

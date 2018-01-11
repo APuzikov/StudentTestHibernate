@@ -1,6 +1,8 @@
 package ru.mera.hibernate;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "questions")
@@ -9,6 +11,8 @@ public class Question {
     private int id;
     private String textOfQuestion;
     private int difficultyLevelId;
+    private DifficultyLevel difficultyLevel;
+    private Set<Answer> answers = new HashSet<>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,7 +34,7 @@ public class Question {
         this.textOfQuestion = textOfQuestion;
     }
 
-    @Column(name = "difficulty_level_d", nullable = false)
+    @Column(name = "difficulty_level_id", nullable = false)
     public int getDifficultyLevelId() {
         return difficultyLevelId;
     }
@@ -39,8 +43,22 @@ public class Question {
         this.difficultyLevelId = difficultyLevelId;
     }
 
-    @Override
-    public String toString() {
-        return id + "---" + textOfQuestion + " - " + difficultyLevelId;
+    @OneToMany(mappedBy = "question")
+    public Set<Answer> getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(Set<Answer> answers) {
+        this.answers = answers;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "difficulty_level_id", insertable = false, updatable = false)
+    public DifficultyLevel getDifficultyLevel() {
+        return difficultyLevel;
+    }
+
+    public void setDifficultyLevel(DifficultyLevel difficultyLevel) {
+        this.difficultyLevel = difficultyLevel;
     }
 }

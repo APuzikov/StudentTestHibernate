@@ -1,5 +1,7 @@
 package ru.mera.hibernate;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -10,6 +12,9 @@ import java.io.InputStreamReader;
 import java.util.List;
 
 public class TestManager {
+
+    static final Logger rootLogger = LogManager.getRootLogger();
+    static final Logger testManagerLogger = LogManager.getLogger(TestManager.class);
 
     private SessionFactory factory;
     private Session session;
@@ -82,6 +87,10 @@ public class TestManager {
     public static void main(String[] args) throws IOException {
 
         TestManager testManager = new TestManager();
+
+        //testManagerLogger.info(testManager.session);
+        rootLogger.info(testManager);
+
         testManager.startTest();
 
         testManager.session.close();

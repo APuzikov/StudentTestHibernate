@@ -3,6 +3,7 @@ package ru.mera.hibernate;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
+import javax.persistence.Id;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -57,7 +58,7 @@ public class Test {
             index++;
             if (answer.isCorrect()) countOfcorrect++;
         }
-        System.out.println("Выберите " + countOfcorrect + " ответов" + "\n");
+        System.out.println("Выберите " + countOfcorrect + " ответов");
     }
 
     int checkOfCorrect(String input, Question question, int studentTestQuestionId){
@@ -73,26 +74,30 @@ public class Test {
         answers = query.list();
 
         SaveResults saveResults = new SaveResults(session);
-        StudentTestAnswers studentTestAnswers = new StudentTestAnswers();
+        for(String s : str){
+            int number = Integer.parseInt(s);
+
+            if (number <= answers.size() && number != 0){
+                StudentTestAnswers studentTestAnswers = new StudentTestAnswers();
+                saveResults.saveStudentTestAnswers(studentTestQuestionId, answers.get(number - 1).getId(), studentTestAnswers);
+            } else System.out.println("Такого ответа нет" + "\n");
+        }
+
 
         if (digits.length != getCountOfCorrect(answers)){
             correct = false;
         } else {
 
             for (int i = 0; i < digits.length; i++){
+
                 digits[i] = Integer.parseInt(str[i]);
-               if (digits[i] <= answers.size() && digits[i] != 0){
+//                StudentTestAnswers studentTestAnswers = new StudentTestAnswers();
+//                saveResults.saveStudentTestAnswers(studentTestQuestionId, answers.get(digits[i] - 1).getId(), studentTestAnswers);
 
-                   saveResults.saveStudentTestAnswers(studentTestQuestionId, answers.get(digits[i] - 1).getId(), studentTestAnswers);
-                   correct = correct && answers.get(digits[i] - 1).isCorrect();
-
-               } else correct = false;
+                   correct = digits[i] <= answers.size() && digits[i] != 0 && correct && answers.get(digits[i] - 1).isCorrect();
             }
 
         }
-
-        System.out.println("-----------------------------------------------------------  " + correct);
-
         return correct ? 1 : 0;
     }
 

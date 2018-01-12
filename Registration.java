@@ -3,6 +3,7 @@ package ru.mera.hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import ru.mera.hibernate.entity.Student;
 
 import java.io.BufferedReader;
 import java.io.IOException;

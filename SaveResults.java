@@ -1,6 +1,7 @@
 package ru.mera.hibernate;
 
 import org.hibernate.Session;
+import ru.mera.hibernate.entity.*;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -13,6 +14,9 @@ public class SaveResults {
     private int resultOfTest;
     private Session session;
 
+    public SaveResults() {
+    }
+
     SaveResults(Student student, Session session) {
         this.student = student;
         this.session = session;
@@ -22,7 +26,7 @@ public class SaveResults {
         this.session = session;
     }
 
-    void saveStudentTest(StudentTest studentTest){
+    StudentTest saveStudentTest(StudentTest studentTest){
 
         Date date = new Date();
         Timestamp timestamp = new Timestamp(date.getTime());
@@ -30,9 +34,11 @@ public class SaveResults {
 
         session.beginTransaction();
         studentTest.setStudentId(student.getId());
+        studentTest.setCreateDate(timestamp);
         studentTest.setTestDate(timestamp);
         session.save(studentTest);
         session.getTransaction().commit();
+        return studentTest;
     }
 
     void saveStudentTestQuestions(int studentTestId, int questionId, StudentTestQuestion studentTestQuestion){

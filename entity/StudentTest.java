@@ -1,4 +1,4 @@
-package ru.mera.hibernate;
+package ru.mera.hibernate.entity;
 
 
 import javax.persistence.*;
@@ -12,6 +12,7 @@ public class StudentTest {
 
     private int id;
     private int studentId;
+    private Timestamp createDate;
     private Timestamp testDate;
     private Timestamp endDate;
     private float testResult;
@@ -36,6 +37,15 @@ public class StudentTest {
 
     public void setStudentId(int studentId) {
         this.studentId = studentId;
+    }
+
+    @Column(name = "create_date")
+    public Timestamp getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Timestamp createDate) {
+        this.createDate = createDate;
     }
 
     @Column(name = "test_date")

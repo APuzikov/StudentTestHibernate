@@ -5,6 +5,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import ru.mera.hibernate.entity.Student;
 
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -40,19 +41,18 @@ public class Registration {
         while (true){
             System.out.println("Адрес электронной почты:");
             email = reader.readLine();
-            if (chekEmail(email)) break;
+            if (checkEmail(email)) break;
             else System.out.println("Не очень-то похоже на адрес.");
         }
     }
 
-    private boolean chekEmail(String input){
+    public boolean checkEmail(String input){
         Pattern pattern = Pattern.compile("\\w+([.-]?\\w+)*@\\w+([.-]?\\w+)*\\.\\w{2,4}");
         Matcher matcher = pattern.matcher(input);
         return matcher.matches();
     }
 
     private void readPassword() throws IOException{
-        //reader = new BufferedReader(new InputStreamReader(System.in));
         while (true){
             System.out.println("Введите ваш пароль(не менее 5 символов):");
             password = reader.readLine();

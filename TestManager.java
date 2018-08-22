@@ -5,6 +5,10 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import ru.mera.hibernate.entity.Question;
+import ru.mera.hibernate.entity.Student;
+import ru.mera.hibernate.entity.StudentTest;
+import ru.mera.hibernate.entity.StudentTestQuestion;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,8 +17,8 @@ import java.util.List;
 
 public class TestManager {
 
-    static final Logger rootLogger = LogManager.getRootLogger();
-    static final Logger testManagerLogger = LogManager.getLogger(TestManager.class);
+    //static final Logger rootLogger = LogManager.getRootLogger();
+    private static final Logger testManagerLogger = LogManager.getLogger(TestManager.class);
 
     private SessionFactory factory;
     private Session session;
@@ -28,6 +32,8 @@ public class TestManager {
 
 
     void startTest() throws IOException{
+
+        testManagerLogger.info("Start test -------------------------------");
 
         int numberOfQuestion = 1;
         String input;
@@ -46,6 +52,8 @@ public class TestManager {
 
         if (student == null){
             System.out.println("Студент не найден, или неверный пароль");
+            testManagerLogger.info("Студент не найден, или неверный пароль");
+
         } else {
             System.out.println("Студент: " + student.getName());
             System.out.println("Уровень сложности - " + "NORMAL");
@@ -58,11 +66,15 @@ public class TestManager {
             QuestionsLoader questionsLoader = new QuestionsLoader(6, session);
             questions = questionsLoader.getQuestions();
 
+
+
             Test test = new Test(questions.size(), session);
 
 
 
             for(Question question : questions){
+
+                testManagerLogger.info("Вопрос №:" + question.getId() );
 
                 StudentTestQuestion studentTestQuestion = new StudentTestQuestion();
 
@@ -70,6 +82,7 @@ public class TestManager {
 
                 test.outputQuestionsToConsole(question, numberOfQuestion);
                 numberOfQuestion++;
+
 
                 input = test.readFromConsole();
 
@@ -80,7 +93,11 @@ public class TestManager {
             test.resultsToConsole(resultOfTest, student.getName());
             saveResults.updateStudentTest(studentTest, test.calculatePercent(resultOfTest));
 
+            testManagerLogger.info("Результат теста: " + resultOfTest);
+
         }
+
+        testManagerLogger.info("End test --------------------------------------");
 
     }
 
@@ -88,8 +105,8 @@ public class TestManager {
 
         TestManager testManager = new TestManager();
 
-        //testManagerLogger.info(testManager.session);
-        rootLogger.info(testManager);
+        testManagerLogger.info(testManager.session);
+        //rootLogger.info(testManager);
 
         testManager.startTest();
 

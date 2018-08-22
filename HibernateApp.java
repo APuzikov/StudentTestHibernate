@@ -1,12 +1,12 @@
 package ru.mera.hibernate;
 
 
-import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.Query;
+import ru.mera.hibernate.entity.Answer;
+import ru.mera.hibernate.entity.Student;
 
 import java.util.List;
 

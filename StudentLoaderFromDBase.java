@@ -1,7 +1,8 @@
 package ru.mera.hibernate;
 
 import org.hibernate.query.Query;
-import org.hibernate.Session;;import java.util.List;
+import org.hibernate.Session;
+import ru.mera.hibernate.entity.Student;;import java.util.List;
 
 public class StudentLoaderFromDBase {
 

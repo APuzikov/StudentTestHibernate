@@ -4,6 +4,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
+import ru.mera.hibernate.entity.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;

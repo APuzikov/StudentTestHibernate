@@ -1,4 +1,4 @@
-package ru.mera.hibernate;
+package ru.mera.hibernate.entity;
 
 import javax.persistence.*;
 import java.util.HashSet;

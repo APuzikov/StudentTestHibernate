@@ -1,9 +1,13 @@
 package ru.mera.hibernate;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
+import ru.mera.hibernate.entity.Answer;
+import ru.mera.hibernate.entity.Question;
+import ru.mera.hibernate.entity.StudentTestAnswers;
 
-import javax.persistence.Id;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -13,7 +17,8 @@ import java.util.regex.Pattern;
 
 public class Test {
 
-    //private List<Question > questions;
+    static final Logger testLogger = LogManager.getLogger(TestManager.class);
+
     private int countOfQuestions;
     private Session session;
 
@@ -22,12 +27,17 @@ public class Test {
         this.session = session;
     }
 
-    String readFromConsole() throws IOException {
-        String inputFromConsole;
+    String readFromConsole() throws IOException{
+        String inputFromConsole = "";
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         while (true) {
 
-            inputFromConsole = reader.readLine();
+            try {
+                inputFromConsole = reader.readLine();
+            } catch (IOException e) {
+                e.printStackTrace();
+                testLogger.info("Ошибка ввода");
+            }
             Pattern regex1 = Pattern.compile("^\\d(,\\d)*");
             Matcher m1 = regex1.matcher(inputFromConsole);
 
@@ -38,6 +48,9 @@ public class Test {
                 break;
             }
         }
+
+        testLogger.info("Ответы считаны из консоли");
+
         return inputFromConsole;
     }
 
@@ -53,13 +66,19 @@ public class Test {
         answers = query.list();
 
         int index = 1;
+
+        //answers.stream().forEach(a -> System.out.println(a.getTextOfAnswer()));
+
         for (Answer answer : answers) {                     //вывод вариантов ответов в консоль
             System.out.println(index + " " + answer.getTextOfAnswer() + " " + answer.isCorrect());
             index++;
             if (answer.isCorrect()) countOfcorrect++;
         }
         System.out.println("Выберите " + countOfcorrect + " ответов");
+
+        testLogger.info("Вопрос и список ответов выведены в консоль");
     }
+
 
     int checkOfCorrect(String input, Question question, int studentTestQuestionId){
 
@@ -112,14 +131,13 @@ public class Test {
         } else System.out.println("Тест не пройден");
     }
 
-    private int getCountOfCorrect(List<Answer> answers){
-        int countOfCorrect = 0;
-
-        for (Answer answer : answers){
-
-            if (answer.isCorrect()) countOfCorrect++;
-        }
-      return countOfCorrect;
+    private long getCountOfCorrect(List<Answer> answers){
+        //int countOfCorrect = 0;
+//        for (Answer answer : answers){
+//
+//            if (answer.isCorrect()) countOfCorrect++;
+//        }
+      return answers.stream().filter(answer -> answer.isCorrect()).count();
     }
 
     int calculatePercent(int resultOfTest) {

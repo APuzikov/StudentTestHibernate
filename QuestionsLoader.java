@@ -1,12 +1,17 @@
 package ru.mera.hibernate;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
+import ru.mera.hibernate.entity.Question;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class QuestionsLoader {
+
+    static final Logger loggerQL = LogManager.getLogger(QuestionsLoader.class);
 
     private int countOfQuestions;
     private Session session;
@@ -36,6 +41,8 @@ public class QuestionsLoader {
             query.setParameter(0, numbersOfQuestions[i]);
             questions.add((Question)query.getSingleResult());
         }
+
+        loggerQL.info("Список вопросов загружен из базы данных");
 
         return questions;
     }

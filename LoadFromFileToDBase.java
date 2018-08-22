@@ -3,17 +3,14 @@ package ru.mera.hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.query.Query;
-import org.hibernate.sql.ordering.antlr.Factory;
+import ru.mera.hibernate.entity.Answer;
+import ru.mera.hibernate.entity.Question;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,11 +53,11 @@ public class LoadFromFileToDBase {
                 if (line.equals("----START ANSWERS----")) {
                     flag = true;
 
-                } else if (flag == false) {
+                } else if (!flag) {
                     //продолжаем читать вопрос
                     buffer.append(line).append("\n");
 
-                } else if (flag == true) {
+                } else if (flag) {
                     //читаем ответы
                     answers.add(line);
                 }
